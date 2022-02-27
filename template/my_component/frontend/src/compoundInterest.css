@@ -1,0 +1,69 @@
+
+
+.authors {
+    line-height:10px;
+    margin-bottom: 20px;
+    float:right;
+}
+
+.page3content {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.page3buttonleft {
+    margin-left: 0;
+}
+
+.page3buttonright {
+    margin-right: 0;
+}
+
+.page3Questions {
+    margin-left: 20px;
+    margin-right: 20px;
+    line-height: 1rem;
+}
+
+.page3Questions .p{
+    font-size: 0.8rem;
+}
+
+.page3Equations {
+    color:blue;
+}
+
+.numberInput {
+    width: 50px;
+}
+
+.page3Submit {
+    float: right;
+    margin-bottom: 20px;
+}
+
+.page4Question{
+    margin: auto;
+    width: 60%;
+    /* border: 5px solid #007bff; */
+    /* text-align: center; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+    padding-top: 30px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 20px;
+}
+
+.page4submit {
+    margin-top:20px;
+}
+
+.page4buttonspace {
+    height:50px;
+}
+.page4morespace {
+    visibility: hidden;
+}
