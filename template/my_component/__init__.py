@@ -145,7 +145,9 @@ if _RELEASE:
 
    
     curr_state = my_component(0)
-    curr_page = curr_state["currPage"]
+    curr_page = 0
+    if(curr_state and "currPage" in curr_state):
+        curr_page = curr_state["currPage"]
     # st.write(curr_state)
     page3index = 0
     page3value = 0
