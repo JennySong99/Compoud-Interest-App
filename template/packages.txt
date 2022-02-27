@@ -1,3 +1,0 @@
-freeglut3-dev
-tk
-libgtk2.0-dev
