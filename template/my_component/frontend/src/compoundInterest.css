@@ -35,7 +35,7 @@
 }
 
 .numberInput {
-    width: 50px;
+    width: 100px;
 }
 
 .page3Submit {
@@ -66,4 +66,10 @@
 }
 .page4morespace {
     visibility: hidden;
+    height:100px;
+}
+
+.p4text{
+    height:80px;
+    width: 90%;
 }

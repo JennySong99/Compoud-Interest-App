@@ -12,7 +12,7 @@ import numpy as np
 # the component, and True when we're ready to package and distribute it.
 # (This is, of course, optional - there are innumerable ways to manage your
 # release process.)
-_RELEASE = True
+_RELEASE = False
 
 # Declare a Streamlit component. `declare_component` returns a function
 # that is used to create instances of the component. We're naming this
@@ -131,14 +131,14 @@ def getPage3Feedback(index):
         1000 * (1+4%*8) = 1320
         1000* (1+4%)^8 = 1369'''
  
-    
+
 
 
 
 # Add some test code to play with the component while it's in development.
 # During development, we can run this just as we would any other Streamlit
 # app: `$ streamlit run my_component/__init__.py`
-if _RELEASE:
+if not _RELEASE:
     import streamlit as st
     
     # st.set_page_config(layout='wide') 
@@ -161,12 +161,13 @@ if _RELEASE:
     # curr_page = 0
 
     if(curr_page == 1):
-        video_file = open('/app/compoud-interest-app/template/my_component/CompoundInterest.mp4', 'rb')
+        # video_file = open('/app/compoud-interest-app/template/my_component/CompoundInterest.mp4', 'rb')
+        video_file = open('my_component/CompoundInterest.mp4', 'rb')
         video_bytes = video_file.read()
 
         st.video(video_bytes)
         st.subheader("Open Ended Questions")
-        txt1 = st.text_area('1. Explain the difference between compound interest and simple interest?', value="")
+        txt1 = st.text_area('1. Could you explain the difference between compound interest and simple interest?', value="")
         if st.button('submit',key="submit1"):
             st.write("Compound interest is basically a concept that overtime, your money begins to make you money when the interest compounds on your principle.")
 
@@ -175,6 +176,7 @@ if _RELEASE:
         # st.write('The current interest is ', number)
         number = 0.06
         x = np.arange(2022, 2033)
+
 
         fig = go.Figure()
         fig.add_trace(go.Scatter(
@@ -188,29 +190,22 @@ if _RELEASE:
             hovertemplate="%{y}%{_xother}",
             name="Single Interest"))
         fig.update_traces(hoverinfo='text',mode="markers+lines",)
-        fig.update_layout(title='Total revenue',
+        fig.update_layout(title='Total savings',
                    xaxis_title='Year',
                    yaxis_title='Dollar',
                    legend=dict(y=0.5, font_size=13),
                    hovermode="x unified")
         st.plotly_chart(fig, use_container_width=True)
         st.subheader("Open Ended Questions")
-        txt1 = st.text_area('1. Who is able to gain more money?', value="")
+        txt1 = st.text_area('1. Who will be able to gain more money?', value="")
         if st.button('submit',key="submit2"):
-            st.write("feedback")
-        txt2 = st.text_area('2. Observe the graph of simple interest, which type of function is most similar? What about compound interest?', value="")
+            st.write("Thanks for your response! we will discuss more in the following pages.")
+        txt2 = st.text_area('2. Observe the graph of simple interest, which type of function has the most similar shape? What about compound interest?', value="")
         # st.write('Question:', txt)
         if st.button('submit',key="submit3"):
-            st.write("feedback")
+            st.write("Thanks for your response! we will discuss more in the following pages.")
         
-        # m = st.markdown("""
-        # <style>
-        # div.stButton > button:first-child {
-        #     background-color: rgb(204, 49, 49);
-        # }
-        # </style>""", unsafe_allow_html=True)
-
-        # b = st.button("test")
+     
     if(curr_page == 3):
         fig = go.Figure()
         number = 0.04
@@ -266,7 +261,7 @@ if _RELEASE:
                 name="Correct Compund Interest",
                 mode="markers+lines"))
         
-            fig.update_layout(title='Total revenue',
+            fig.update_layout(title='Total savings',
                     xaxis_title='Year',
                     xaxis=dict(
                         dtick=1,
@@ -307,7 +302,7 @@ if _RELEASE:
                 line_color="#FF8235",
                 name="Compound Interest"))
             fig.update_traces(hoverinfo='text',mode="lines",)
-            fig.update_layout(title='Total revenue',
+            fig.update_layout(title='Total savings',
                     xaxis_title='Year',
                     yaxis_title='Dollar',
                     legend=dict(

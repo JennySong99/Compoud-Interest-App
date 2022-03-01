@@ -14,6 +14,9 @@ import "./compoundInterest.css"
     page4index: number,
     page4value: any,
     page4submitted: boolean,
+    page4score: number,
+    page4currentQ: string,
+    page4nextclicked: boolean,
   }
 
   
@@ -42,13 +45,20 @@ import "./compoundInterest.css"
             page3value: page3ValueDict,
             page3submitted: false,
             page4index: 0,
-            page4value: {},
+            page4value: {
+                "l20":"",
+                "l21":"",
+            },
             page4submitted: false,
+            page4score: 0,
+            page4currentQ:"",
+            page4nextclicked: false
         }
         this.handleValueChange = this.handleValueChange.bind(this);
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleP4FormSubmit = this.handleP4FormSubmit.bind(this);
         this.handleP4ValueChange = this.handleP4ValueChange.bind(this);
+        this.page4GoNext = this.page4GoNext.bind(this);
         Streamlit.setComponentValue({"currPage": 0});
 
     }
@@ -126,7 +136,6 @@ import "./compoundInterest.css"
 
     
     private page3GoBack = (): void => {
-        console.log("buttons", this)
         let newPage:number = this.state.page3index - 1
         this.setState(
             { page3index: newPage },
@@ -167,7 +176,6 @@ import "./compoundInterest.css"
 
     private handleFormSubmit(e: any) {
         e.preventDefault();
-        console.log(this);
         // send multiple state value to streamlit
         Streamlit.setComponentValue(
             {...this.state,
@@ -233,7 +241,7 @@ import "./compoundInterest.css"
                     <p>simple interest: 
                         <span className="page3Equations"> 1000 * </span>
                         <input type="text" name="e6" className="numberInput" value={this.state.page3value["e6"]} onChange={this.handleValueChange}/>
-                        <span className="page3Equations">) = </span><input type="text" name="s6" className="numberInput" value={this.state.page3value["s6"]} onChange={this.handleValueChange} /></p>
+                        <span className="page3Equations"> = </span><input type="text" name="s6" className="numberInput" value={this.state.page3value["s6"]} onChange={this.handleValueChange} /></p>
                     <p>compound interest: 
                         <span className="page3Equations"> 1000* </span>
                         <input type="text" name="d6" className="numberInput" value={this.state.page3value["d6"]} onChange={this.handleValueChange}/>
@@ -251,7 +259,7 @@ import "./compoundInterest.css"
                 <p>simple interest: 
                     <span className="page3Equations"> 1000 * </span>
                     <input type="text" name="e7" className="numberInput" value={this.state.page3value["e7"]} onChange={this.handleValueChange}/>
-                    <span className="page3Equations">) = </span><input type="text" name="s7" className="numberInput" value={this.state.page3value["s7"]} onChange={this.handleValueChange} /></p>
+                    <span className="page3Equations"> = </span><input type="text" name="s7" className="numberInput" value={this.state.page3value["s7"]} onChange={this.handleValueChange} /></p>
                 <p>compound interest: 
                     <span className="page3Equations"> 1000 * </span>
                     <input type="text" name="d7" className="numberInput" value={this.state.page3value["d7"]} onChange={this.handleValueChange}/>
@@ -265,7 +273,7 @@ import "./compoundInterest.css"
                 <p>compound interest: 
                     {/* <span className="page3Equations"> 1000* </span> */}
                     <input type="text" name="d8" className="numberInput" value={this.state.page3value["d8"]} onChange={this.handleValueChange}/>
-                    <span className="page3Equations"> = </span><input type="text" name="c6" className="numberInput" value={this.state.page3value["c8"]} onChange={this.handleValueChange} /></p>
+                    <span className="page3Equations"> = </span><input type="text" name="c8" className="numberInput" value={this.state.page3value["c8"]} onChange={this.handleValueChange} /></p>
 
                 <input className="page3Submit" type="submit" value="Submit" />
                 </form>
@@ -276,7 +284,7 @@ import "./compoundInterest.css"
                 <div className="page3Questions">
                     <p><strong>nth year: </strong></p>
                     <p>simple interest: <span className="page3Equations"> 1000 * (1+4%*n)</span></p>
-                    <p>Your friend account with compound interest: <span className="page3Equations">1000 * (1+4%)^n</span></p>
+                    <p>Amy's account with compound interest: <span className="page3Equations">1000 * (1+4%)^n</span></p>
 
                     <p>As you can see, the account with simple interest could be calculated by linear functions, which grow by equal differences ($40/year) over the years, the account with compound interest could be calculated by exponential functions, which grow by equal factors (4%) over the years. </p>
 
@@ -298,24 +306,27 @@ import "./compoundInterest.css"
             )
         }
     }
+        
 
     private Qlist = {
         "l1":[{
             "question": "You want to get a principal and interest sum of $1,000 from the bank after 4 years at an annual interest rate of 5%. How should you calculate how much you need to deposit in the bank now under the simple interest method?",
-            "choices": ["A: 1000 * 1 / (1+5%)", "B: 1000 * (1+5%)", "C: 1000 * 1 / (1+5%*4)", "D 1000 * (1+5%*4)"],
+            "choices": [" A: 1000 * 1 / (1+5%)", " B: 1000 * (1+5%)", " C: 1000 * 1 / (1+5%*4)", " D 1000 * (1+5%*4)"],
             "feedback":["A: Incorrect. Please read the question again and figure out how long does the deposit last? Is it 1 year or 4 years?",
             "B: Incorrect. Please read the question again and figure out how long does the deposit last? Is it 1 year or 4 years? The question asks for the principal you need to deposit instead of the money you withdraw.",
-            "C: Correct. You apply a smart strategy to solve this question.",
+            "C: Correct. You apply a great strategy to solve this question.",
             "D: Incorrect. The question asks for the principal you need to deposit instead of the money you withdraw."],
             "answer":"2",
             },{
                 "question": "Sarah deposits $5000 initial money in the bank at a yearly compound interest rate of 10%. After how many years will her overall money begin to exceed $7000?",
-                "choices": ["A: 2 years", "B: 3 years", "C: 4 years", "D: 5 years"],
+                "choices": [" A: 2 years", " B: 3 years", " C: 4 years", " D: 5 years"],
                 "answer":"2",
+                "feedback":[]
             },{
-                "question": "Alice chooses the 5% yearly simple interest rate. Amy chooses the 5% yearly compound interest rate. They will both withdraw their savings in the 4th year. How much money will Amy gain more than Alice?",
-                "choices": ["A: 0", "B: 5", "C: 15", "D: 31"],
+                "question": " Alice and Amy both save $1000 in the bank. Alice chooses the 5% yearly simple interest rate. Amy chooses the 5% yearly compound interest rate. They will both withdraw their savings in the 4th year. How much money will Amy gain more than Alice?",
+                "choices": [" A: 0", " B: 5", " C: 15", " D: 31"],
                 "answer":"2",
+                "feedback":[]
             }],
         "l2": [{
             "question": " You deposit $2,000 in a bank for a fixed term of 3 years at an interest rate of 10% per year, and you choose to compound the interest. At the end of the 3 years, calculate how much money you will receive from the bank.",
@@ -325,22 +336,157 @@ import "./compoundInterest.css"
                 "answer":"Jack: 4100 * (1+5%*3)=4715\
                         You: 4000*(1+5%)^3=4630.5\
                         Jack will receive more money",
+                "choices":[],
+                "feedback":[]
             },{
                 "question": " You save $1000 in the bank 10% per year simple interest. After saving for 2 years, you learn the difference between simple interest and compound interest. You decide to withdraw all your money and then save them in another bank at a yearly compound interest of 5% for 2 years. How much money will you get after the entire 4 years?",
                 "answer":"2 year simple: 1000 * (1+10%*2)=1200\
                         2 year compound: 1200 * (1+10%)^2=1452",
+                "choices":[],
+                "feedback":[]
             }],
     }
 
+    private QhtmlList = () =>([
+        (<div>
+            <p>{this.Qlist["l1"][0].question}</p>
+            <div>
+                <input type="radio" name="l10" value="a0" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l10" in this.state.page4value && this.state.page4value["l10"] === "a0"}/>
+                <label htmlFor="a0">{this.Qlist["l1"][0].choices[0]}</label>
+            </div>
+            <div>
+                { this.state.page4submitted && this.state.page4value["l10"] === "a0" &&
+                    <div className="alert alert-warning" role="alert">
+                        {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[0]}</div>
+                }
+            </div>
+            <div>
+                <input type="radio" name="l10" value="a1" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l10" in this.state.page4value && this.state.page4value["l10"] === "a1"}/>
+                <label htmlFor="a1">{this.Qlist["l1"][0].choices[1]}</label>
+            </div>
+            <div>
+                { this.state.page4submitted && this.state.page4value["l10"] === "a1" &&
+                    <div className="alert alert-warning" role="alert">
+                        {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[1]}</div>
+                }
+            </div>
+            <div>
+                <input type="radio" name="l10" value="a2" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l10" in this.state.page4value && this.state.page4value["l10"] === "a2"}/>
+                <label htmlFor="a2">{this.Qlist["l1"][0].choices[2]}</label>
+            </div>
+            <div>
+                { this.state.page4submitted && this.state.page4value["l10"] === "a2" &&
+                    <div className="alert alert-success" role="alert">
+                        {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[2]}</div>
+                }
+            </div>
+            <div className="page4buttonspace">
+            {!this.state.page4submitted && <button type="button" disabled={!("l10" in this.state.page4value)} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
+            {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+            </div>
+            
+        
+        </div>),(
+            <div>
+            <p>{this.Qlist["l1"][1].question}</p>
+            <div>
+                <input type="radio" name="l11" value="b0" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l11" in this.state.page4value && this.state.page4value["l11"] === "b0"}/>
+                <label htmlFor="b0">{this.Qlist["l1"][1].choices[0]}</label>
+            </div>
+            <div>
+                <input type="radio" name="l11" value="b1" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l11" in this.state.page4value && this.state.page4value["l11"] === "b1"}/>
+                <label htmlFor="b1">{this.Qlist["l1"][1].choices[1]}</label>
+            </div>
+            <div>
+                <input type="radio" name="l11" value="b2" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l11" in this.state.page4value && this.state.page4value["l11"] === "b2"}/>
+                <label htmlFor="b2">{this.Qlist["l1"][1].choices[2]}</label>
+            </div>
+            <div className="page4buttonspace">
+            {!this.state.page4submitted && <button type="button" disabled={!("l11" in this.state.page4value)} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
+            {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+            </div>
+            
+        </div>
+        ),(
+            <div>
+            <p>{this.Qlist["l1"][2].question}</p>
+            <div>
+                <input type="radio" name="l12" value="c0" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l12" in this.state.page4value && this.state.page4value["l12"] === "c0"}/>
+                <label htmlFor="c0">{this.Qlist["l1"][2].choices[0]}</label>
+            </div>
+            <div>
+                <input type="radio" name="l12" value="c1" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l12" in this.state.page4value && this.state.page4value["l12"] === "c1"}/>
+                <label htmlFor="c1">{this.Qlist["l1"][2].choices[1]}</label>
+            </div>
+            <div>
+                <input type="radio" name="l12" value="c2" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange} 
+                checked={"l12" in this.state.page4value && this.state.page4value["l12"] === "c2"}/>
+                <label htmlFor="c2">{this.Qlist["l1"][2].choices[2]}</label>
+            </div>
+            <div className="page4buttonspace">
+            {!this.state.page4submitted && <button type="button" disabled={!("l12" in this.state.page4value)} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
+            {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+            </div>
+            
+        
+        </div>
+        )
+    ])
+
+
+    private oeqlList = ()=>([
+        (
+            <div>
+                <p>{this.Qlist["l2"][0].question}</p>
+                <textarea name="l20" className="p4text" value={this.state.page4value["l20"]} onChange={this.handleP4ValueChange} />
+                { this.state.page4submitted && this.state.page4value["l20"].trim() === "" && 
+                    <div className="alert alert-warning" role="alert">
+                        Please provide an answer!</div>}
+                { this.state.page4submitted && this.state.page4value["l20"].trim() !== "" && 
+                    <div className="alert alert-success" role="alert"> {this.Qlist["l2"][0].answer}</div>}
+                <div className="page4buttonspace">
+                {!this.state.page4submitted && <button type="button" disabled={this.state.page4value["l20"]=== ""} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
+                {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+                </div>
+            </div>
+        ),
+        (
+            <div>
+                <p>{this.Qlist["l2"][1].question}</p>
+                <textarea name="l21" className="p4text" value={this.state.page4value["l21"]} onChange={this.handleP4ValueChange} />
+                { this.state.page4submitted && this.state.page4value["l21"].trim() === "" && 
+                    <div className="alert alert-warning" role="alert">
+                        Please provide an answer!</div>}
+                { this.state.page4submitted && this.state.page4value["l21"].trim() !== "" && 
+                    <div className="alert alert-success" role="alert"> {this.Qlist["l2"][1].answer}</div>}
+                <div className="page4buttonspace">
+                {!this.state.page4submitted && <button type="button" disabled={this.state.page4value["l21"]=== ""} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
+                {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+                </div>
+                
+           
+            </div>
+        )]);
+
     private handleP4FormSubmit(e:any) {
         e.preventDefault();
-        this.setState( 
-            {page4submitted: true}
-        )
+        this.setState(state => ({
+            page4submitted: true
+        }));
+       
     }
 
     private handleP4ValueChange(e:any) {
         this.setState({
+            page4currentQ: e.target.name,
             page4value: {
                 ...this.state.page4value,
                 [e.target.name]: e.target.value
@@ -349,67 +495,90 @@ import "./compoundInterest.css"
     }
 
     private page4GoNext() {
-        this.setState({
-            page4index: this.state.page4index + 1
-        })
+        let currentQname:string = this.state.page4currentQ;
+        let qindex:number = parseInt(currentQname.charAt(2))
+        var qinlist;
+        var correct: boolean = false;
+        var chosenradio = this.state.page4value[currentQname];
+        if(currentQname.slice(0, 2) ==="l1") {
+            qinlist = this.Qlist["l1"];
+            correct = chosenradio.slice(1) === qinlist[qindex].answer;
+        } else {
+            qinlist = this.Qlist["l2"];
+            correct = this.state.page4value[currentQname].trim() !== ""
+        }
+        
+
+        if(correct){
+            this.setState(state => ({
+                page4score: state.page4score + 1,
+                page4index: this.state.page4index + 1,
+                page4nextclicked: true,
+                page4submitted: false,
+                page4value:{
+                    "l20": "",
+                    "l21": "",
+                }
+            }));
+        } else {
+            this.setState(state => ({
+                page4index: this.state.page4index + 1,
+                page4nextclicked: true,
+                page4submitted: false,
+                page4value:{
+                    "l20": "",
+                    "l21": "",
+                }
+            }));
+        }
+       
     }
 
 
     private page4Content = () => {
-       
-        if(this.state.page4index === 0) {
+        if(this.state.page4score < 2) {
             return (
                 <div>
                 <div className = "page4Question">
-                <p>Question 1/4</p>
-                    <p>{this.Qlist["l1"][0].question}</p>
-                    <div>
-                        <input type="radio" name="l10" value="0" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange}/>
-                        <label htmlFor="0">{this.Qlist["l1"][0].choices[0]}</label>
-                    </div>
-                    <div>
-                        { this.state.page4submitted && this.state.page4value["l10"] === "0" &&
-                            <div className="alert alert-warning" role="alert">
-                                {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[0]}</div>
-                        }
-                    </div>
-                    <div>
-                        <input type="radio" name="l10" value="1" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange}/>
-                        <label htmlFor="1">{this.Qlist["l1"][0].choices[1]}</label>
-                    </div>
-                    <div>
-                        { this.state.page4submitted && this.state.page4value["l10"] === "1" &&
-                            <div className="alert alert-warning" role="alert">
-                                {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[1]}</div>
-                        }
-                    </div>
-                    <div>
-                        <input type="radio" name="l10" value="2" disabled={this.state.page4submitted} onChange={this.handleP4ValueChange}/>
-                        <label htmlFor="2">{this.Qlist["l1"][0].choices[2]}</label>
-                    </div>
-                    <div>
-                        { this.state.page4submitted && this.state.page4value["l10"] === "2" &&
-                            <div className="alert alert-success" role="alert">
-                                {this.Qlist["l1"][0].feedback && this.Qlist["l1"][0].feedback[2]}</div>
-                        }
-                    </div>
-                    <div className="page4buttonspace">
-                    {!this.state.page4submitted && <button type="button" disabled={!("l10" in this.state.page4value)} className="btn btn-outline-success ustify-content-md-end page4submit" onClick={this.handleP4FormSubmit}>Submit</button>}
-                    {this.state.page4submitted && <div className="float-sm-right"><button type="button" className="btn btn-outline-success ustify-content-md-end" onClick={this.page4GoNext}>Next</button></div>}
+                    <p>Score: {this.state.page4score}/4</p> 
+                {this.QhtmlList()[this.state.page4index%3]}
+                
+                </div>
+                </div>
+            )
+        } if(this.state.page4score < 4) {
+            return (
+                <div>
+                <div className = "page4Question">
+                    <p>Score: {this.state.page4score}/4</p> 
+                {this.oeqlList()[this.state.page4index%2]}
+                
+                </div>
+                </div>
+            )
+        } else {
+            return (
+                <div>
+                     <div className = "page4Question">
+                    <p>Score: {this.state.page4score}/4</p> 
+                    <p><strong>Congratulations! You've completed the course!</strong></p>
                     </div>
                     
                 </div>
-                <div className="page4morespace">test</div>
-                </div>
             )
         }
+       
+    }
+
+    private getRandomInt(max:number) {
+        return Math.floor(Math.random() * max);
     }
 
    
 
     public page0 = (
         <div>
-            <h1 style={{marginBottom:"20px"}}>Welcome to Compound Interests!</h1>
+            <h1 style={{marginBottom:"20px"}}>Welcome to the Compound Interests Lesson!</h1>
             <div className="authors">
                 <p>Zijing Lu</p>
                 <p>Jenny Song</p>
@@ -430,7 +599,7 @@ import "./compoundInterest.css"
             <ul>
                 <li>Recognize that with same interest rate, saving grow faster with compound interest than simple interest.</li>
             </ul>
-            <p>Your friend Amy and you would like to invest some money into the bank to earn the interest. You both decide to put 1000 dollars initially. You choose to use simple interest(Blue line). Your friend chooses to use complex interests(Yellow line). Input the annual interest rate and explore how much money you and your friend will get with the same initial investment but based on different interest types in 10 years.</p>
+            <p>Your friend Amy and you would like to invest some money into the bank to earn some interests. You both decide to put 1000 dollars initially. You choose to use simple interest(Red line). Your friend chooses to use complex interests(Blue line). The bank showed you guys a graph on how your total savings will change in 10 years with the same initial investment and same interest rate. Explore the graph and find out who will gain more money.</p>
         </div>
     )
 
@@ -450,7 +619,7 @@ import "./compoundInterest.css"
                 <li>Calculate the compound and simple interest.</li>
                 <li>Apply the formula to context-based problems.</li>
             </ul>
-            <p>Your friend Amy and you would like to invest some money into the bank to earn the interest. You both decide to put 1000 dollars initially. You choose to use simple interest(Blue dots and line).Your friend chooses to use complex interests(Yellow dots and line). The annual interest rates are both 4%. Try to calculte how your savings will change in 10 years following instructions.</p>
+            <p>Now you and Amy are wondering how to calculate the total savings for simple and compound interets. With the annual interest rates being 4%, follow the instruction below and try to input the values to find out. Be sure to clcik submit and check the graph below to see how your input value and correct value look like in the graph.</p>
 
             <div className="page3content">
             
@@ -491,6 +660,8 @@ import "./compoundInterest.css"
             <div>
                 {this.page4Content()}
             </div>
+            <div className="page4morespace">test</div>
+       
         </div>
   
     )
