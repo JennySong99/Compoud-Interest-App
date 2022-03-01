@@ -161,8 +161,8 @@ if not _RELEASE:
     # curr_page = 0
 
     if(curr_page == 1):
-        # video_file = open('/app/compoud-interest-app/template/my_component/CompoundInterest.mp4', 'rb')
-        video_file = open('my_component/CompoundInterest.mp4', 'rb')
+        video_file = open('/app/compoud-interest-app/template/my_component/CompoundInterest.mp4', 'rb')
+        # video_file = open('my_component/CompoundInterest.mp4', 'rb')
         video_bytes = video_file.read()
 
         st.video(video_bytes)
