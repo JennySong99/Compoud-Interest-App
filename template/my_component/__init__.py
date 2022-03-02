@@ -111,23 +111,23 @@ def getPage3Feedback(index):
         return '''3rd year:
         1000 * (1+4%*3) = 1120
         1000 * (1+4%)^3 = 1125
-4st year:
+4th year:
         1000 * (1+4%*4) = 1160
         1000 * (1+4%)^4 = 1170'''
     elif(index == 2):
-        return '''5st year:
+        return '''5th year:
         1000 * (1+4%*5) = 1200
         1000 * (1+4%)^5 = 1216
-6st year:
+6th year:
         1000 * (1+4%*6) = 1240
         1000 * (1+4%)^6 = 1265'''
     elif(index == 3):
         return '''
-7st year:
+7th year:
         1000 * (1+4%*7) = 1280
         1000 * (1+4%)^7 = 1316
 
-8st year:
+8th year:
         1000 * (1+4%*8) = 1320
         1000 * (1+4%)^8 = 1369'''
  
